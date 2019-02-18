@@ -1,0 +1,114 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Shorten Url App
+# during dev, should point to your local machine
+host: localhost:7080
+# basePath prefixes all resource paths 
+basePath: /v2/url-shorten-service
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /signup:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: user-service
+    post:
+      tags:
+        - "User"
+      description: Signup the user
+      # used as the method name of the controller
+      operationId: userSignup
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+              $ref: "#/definitions/UserRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UserResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /login:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: user-service
+    post:
+      tags:
+        - "User"
+      description: Signup the user
+      # used as the method name of the controller
+      operationId: userLogin
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+              $ref: "#/definitions/UserLoginRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UserLoginResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  UserRequest:
+    required:
+      - name
+      - userName
+      - email
+      - password
+    properties:
+      name:
+        type: string
+      userName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+  UserLoginRequest:
+    required:
+      - userName
+      - password
+    properties:
+      userName:
+        type: string
+      password:
+        type: string
+  UserResponse:
+    properties:
+      userId: 
+        type: string
+  UserLoginResponse:
+    properties:
+      token: 
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

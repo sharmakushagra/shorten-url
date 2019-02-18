@@ -1,0 +1,30 @@
+{
+  "name": "project-service",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bunyan": "^1.8.8",
+    "dotenv": "^4.0.0",
+    "jsonwebtoken": "^8.4.0",
+    "lodash": "^3.6.0",
+    "q": "^1.5.1",
+    "request-promise": "^4.2.1",
+    "restify": "^4.0.2",
+    "rethinkdbdash": "^2.3.31",
+    "swagger-restify-mw": "^0.1.0",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "fs": "0.0.1-security"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}
