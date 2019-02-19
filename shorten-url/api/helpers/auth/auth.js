@@ -14,9 +14,7 @@ let createToken = (user) => {
 }
 
 let verifyToken = async (token) =>{
-    jwt.verify(token, config.secret)
-        .then(()=> true)
-        .catch((err)=> Promise.reject(false));
+    return jwt.verify(token, config.secret);
 }
 
 let checkPasswordValidity = async (reqPassword, password) =>{

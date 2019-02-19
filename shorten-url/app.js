@@ -34,21 +34,28 @@ app.listen(port);
 var config = {
   appRoot: __dirname,
   swaggerSecurityHandlers: {
-    UserSecurity: ()=>{}
-      
-    // function (req, authOrSecDef, scopesOrApiKey, cb) {
-    //   jwt(req, req.res, function(err) {
-    //     if (req.user == undefined) {
-    //       return cb(new Error('access denied - user does not exist in auth0'));
-    //     }
-    //     else {
-    //       var user = req.user.sub.split("|");
-    //       req.userInfo = user;
-    //     }
-    //   });
-    // }
+    UserSecurity: function (req, authOrSecDef, scopesOrApiKey, cb) {
+      console.log(req);
+      auth.verifyToken(req.headers.authorization)
+        .then((tokenDetails)=>{
+          if(validateUser(req, tokenDetails)) {
+            return cb(null);  
+          }else{
+            return cb(new Error('Access denied - User does not have access'));
+          }
+        })
+        .catch((err)=>{
+          return cb(new Error('access denied - Please provide correct authorization'));
+        })      
+    }
   }
 };
+
+function validateUser(req, tokenDetails){
+  if(req.swagger.params.userId.value === tokenDetails.userId)
+    return true;
+  return false;
+}
 
 dbUtils.initDB();
 
@@ -56,7 +63,7 @@ SwaggerRestify.create(config, function(err, swaggerRestify) {
   if (err) { throw err; }
   swaggerRestify.register(app);
   if (swaggerRestify.runner.swagger.paths['/swagger']) {
-    console.log('try this:\ncurl http://127.0.0.1:%d/v2/url-shorten-service/swagger', port);
+    console.log('try this:\ncurl http://127.0.0.1:%d/v2/swagger', port);
   }
 });
 

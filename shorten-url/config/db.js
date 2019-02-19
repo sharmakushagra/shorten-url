@@ -12,6 +12,9 @@ module.exports = {
     tables: [{
         table: "users",
         id: "userId"
-        }
+    }, {
+        table: "url_maps",
+        id: "shortId"
+    }
     ]
 }
